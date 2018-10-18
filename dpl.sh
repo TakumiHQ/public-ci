@@ -37,13 +37,13 @@ function push {
 }
 
 function deploy {
-    # args: default-context master-context
+    # args: $1=default-context $2=master-context
     local DEPLOYMENT_IMAGE=$REGISTRY/utilities:kubectl
 
     if [ "$CIRCLE_BRANCH" == "master" ]; then
-        CONTEXT=$3
-    else
         CONTEXT=$2
+    else
+        CONTEXT=$1
     fi
 
     docker pull $DEPLOYMENT_IMAGE > /dev/null
@@ -54,7 +54,7 @@ function deploy {
 }
 
 if [ `type -t $1`"" == 'function' ]; then
-    $1
+    $*
 else
     echo "Usage: dpl [login build push deploy]"
     exit 1
