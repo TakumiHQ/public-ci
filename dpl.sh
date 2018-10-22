@@ -37,13 +37,14 @@ function push {
 }
 
 function deploy {
-    # args: $1=default-context $2=master-context
     local DEPLOYMENT_IMAGE=$REGISTRY/utilities:kubectl
+    local DEFAULT_CONTEXT=${1:-dev}
+    local MASTER_CONTENT=${2:-prod}
 
     if [ "$CIRCLE_BRANCH" == "master" ]; then
-        CONTEXT=$2
+        CONTEXT=$MASTER_CONTENT
     else
-        CONTEXT=$1
+        CONTEXT=$DEFAULT_CONTEXT
     fi
 
     docker pull $DEPLOYMENT_IMAGE > /dev/null
