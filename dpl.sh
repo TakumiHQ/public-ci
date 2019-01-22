@@ -14,12 +14,15 @@ function login {
     : ${AWS_ACCESS_KEY_ID?"Missing environment variable"}
     : ${AWS_SECRET_ACCESS_KEY?"Missing environment variable"}
 
+    curl -L https://s3-eu-west-1.amazonaws.com/takumi-utils-public/jq-linux64 > ./jq
+    chmod +x ./jq
+
     local SECRET=$(docker run --rm \
         -e REGISTRY=$REGISTRY \
         -e AWS_ACCESS_KEY_ID \
         -e AWS_SECRET_ACCESS_KEY \
         takumihq/amazon-ecr-credential-helper | \
-        node -pe "JSON.parse(require('fs').readFileSync('/dev/stdin').toString()).Secret")
+        ./jq -r .Secret)
 
     docker login -u AWS -p $SECRET -e none $REGISTRY
 }
