@@ -24,7 +24,7 @@ function login {
         takumihq/amazon-ecr-credential-helper | \
         ./jq -r .Secret)
 
-    docker login -u AWS -p $SECRET -e none $REGISTRY
+    docker login -u AWS -p $SECRET $REGISTRY
 }
 
 function build {
