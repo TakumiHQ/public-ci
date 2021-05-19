@@ -28,7 +28,11 @@ function login {
 }
 
 function build {
-    docker build --build-arg BUILD_VERSION=$CIRCLE_SHA1 -t $TAG_LATEST -t $TAG .
+    if [ $# -eq 0  ]; then
+        docker build --build-arg BUILD_VERSION=$CIRCLE_SHA1 -t $TAG_LATEST -t $TAG .
+    else
+        docker build --target "$1" --build-arg BUILD_VERSION=$CIRCLE_SHA1 -t $TAG_LATEST -t $TAG .
+    fi
 }
 
 function push {
